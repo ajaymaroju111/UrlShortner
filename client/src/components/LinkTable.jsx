@@ -13,7 +13,9 @@ export default function LinkTable({ refresh }) {
 
   async function loadLinks() {
     try {
-      const res = await fetch("https://urlshortner-1-4jlb.onrender.com/api/links");
+      const res = await fetch(
+        "https://urlshortner-1-4jlb.onrender.com/api/links"
+      );
 
       if (!res.ok) {
         console.error("Backend returned error:", res.status);
@@ -58,7 +60,6 @@ export default function LinkTable({ refresh }) {
 
   return (
     <div className="bg-white p-5 sm:p-6 shadow-lg rounded-xl mt-6 w-full border border-gray-100">
-      
       {/* Header + Search */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-5 gap-3">
         <h2 className="text-2xl font-bold text-gray-800 tracking-wide">
@@ -109,10 +110,12 @@ export default function LinkTable({ refresh }) {
                 <td className="p-3 text-gray-700">{link.clickCount}</td>
 
                 <td className="p-3 text-gray-700">
-                  {new Date(link.lastClicked).toLocaleString("en-US", {
-                    dateStyle: "medium",
-                    timeStyle: "short",
-                  })}
+                  {link.lastClicked
+                    ? new Date(link.lastClicked).toLocaleString("en-US", {
+                        dateStyle: "medium",
+                        timeStyle: "short",
+                      })
+                    : "—"}
                 </td>
 
                 <td className="p-3 flex items-center gap-4">
