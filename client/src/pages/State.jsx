@@ -9,7 +9,9 @@ export default function Stats() {
 
   async function loadStats() {
     try {
-      const res = await fetch(`https://urlshortner-1-4jlb.onrender.com/api/links/code/${code}`);
+      const res = await fetch(
+        `https://urlshortner-1-4jlb.onrender.com/api/links/code/${code}`
+      );
 
       if (!res.ok) {
         setLoading(false);
@@ -72,19 +74,23 @@ export default function Stats() {
         </p>
 
         <p>
-          <strong className="text-gray-900">Last Clicked:</strong>{" "}
-          {new Date(link.created_at).toLocaleString("en-US", {
-            dateStyle: "medium",
-            timeStyle: "short",
-          })}
+          <strong>Last Clicked:</strong>{" "}
+          {link.last_clicked
+            ? new Date(link.last_clicked).toLocaleString("en-US", {
+                dateStyle: "medium",
+                timeStyle: "short",
+              })
+            : "—"}
         </p>
 
         <p>
-          <strong className="text-gray-900">Created:</strong>{" "}
-          {new Date(link.created_at).toLocaleString("en-US", {
-            dateStyle: "medium",
-            timeStyle: "short",
-          })}
+          <strong>Created:</strong>{" "}
+          {link.created_at
+            ? new Date(link.created_at).toLocaleString("en-US", {
+                dateStyle: "medium",
+                timeStyle: "short",
+              })
+            : "—"}
         </p>
       </div>
 
