@@ -11,7 +11,7 @@ export default function AddLinkForm({ onCreated }) {
     setLoading(true);
     setError("");
 
-    const res = await fetch("http://localhost:4000/api/links", {
+    const res = await fetch("https://urlshortner-1-4jlb.onrender.com/api/links", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ url, code }),

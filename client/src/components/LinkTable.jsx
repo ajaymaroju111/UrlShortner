@@ -7,13 +7,13 @@ export default function LinkTable({ refresh }) {
   const [search, setSearch] = useState("");
 
   const handleCopy = (code) => {
-    const shortUrl = `http://localhost:4000/api/links/${code}`;
+    const shortUrl = `https://urlshortner-1-4jlb.onrender.com/api/links/${code}`;
     navigator.clipboard.writeText(shortUrl);
   };
 
   async function loadLinks() {
     try {
-      const res = await fetch("http://localhost:4000/api/links");
+      const res = await fetch("https://urlshortner-1-4jlb.onrender.com/api/links");
 
       if (!res.ok) {
         console.error("Backend returned error:", res.status);
@@ -40,7 +40,7 @@ export default function LinkTable({ refresh }) {
   }, [refresh]);
 
   async function deleteLink(code) {
-    await fetch(`http://localhost:4000/api/links/${code}`, {
+    await fetch(`https://urlshortner-1-4jlb.onrender.com/api/links${code}`, {
       method: "DELETE",
     });
     loadLinks();

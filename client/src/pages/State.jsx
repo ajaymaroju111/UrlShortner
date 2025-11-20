@@ -9,7 +9,7 @@ export default function Stats() {
 
   async function loadStats() {
     try {
-      const res = await fetch(`http://localhost:4000/api/links/code/${code}`);
+      const res = await fetch(`https://urlshortner-1-4jlb.onrender.com/api/links/code/${code}`);
 
       if (!res.ok) {
         setLoading(false);
@@ -90,7 +90,7 @@ export default function Stats() {
 
       <div className="flex justify-center md:justify-start">
         <a
-          href={`http://localhost:4000/api/links/${code}`}
+          href={`https://urlshortner-1-4jlb.onrender.com/api/links/${code}`}
           className="
             bg-blue-600 hover:bg-blue-700 
             text-white px-4 py-2 
