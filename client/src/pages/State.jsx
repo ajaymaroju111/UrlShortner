@@ -76,7 +76,7 @@ export default function Stats() {
         <p>
           <strong>Last Clicked:</strong>{" "}
           {link.last_clicked
-            ? new Date(link.last_clicked).toLocaleString("en-US", {
+            ? new Date(link.lastClicked).toLocaleString("en-US", {
                 dateStyle: "medium",
                 timeStyle: "short",
               })
@@ -86,7 +86,7 @@ export default function Stats() {
         <p>
           <strong>Created:</strong>{" "}
           {link.created_at
-            ? new Date(link.created_at).toLocaleString("en-US", {
+            ? new Date(link.createdAt).toLocaleString("en-US", {
                 dateStyle: "medium",
                 timeStyle: "short",
               })
