@@ -1,35 +1,66 @@
-const  {isValidUrl,  generateRandomCode, mapRow } = require("../utils/function");
+const { isValidUrl, generateRandomCode, mapRow } = require("../utils/function");
 const db = require('../config/config');
 
 
 
 
-let code = requestedCode ? String(requestedCode).trim() : null;
+const CreateShortUrl = async (req, res) => {
+  try {
+    const { url, code: requestedCode } = req.body || {};
 
-if (code) {
-  if (!CODE_REGEX.test(code)) {
-    return res.status(400).json({ error: "Custom code must match [A-Za-z0-9]{6,8}" });
-  }
+    const CODE_REGEX = /^[A-Za-z0-9]{6,8}$/;
+    if (!url || typeof url !== "string" || !isValidUrl(url)) {
+      return res.status(400).json({ error: "Invalid or missing 'url' (must be http/https)" });
+    }
 
-  const { rowCount } = await db.query("SELECT 1 FROM links WHERE code = $1", [code]);
-  if (rowCount > 0) {
-    return res.status(409).json({ error: "Code already exists" });
-  }
-} else {
-  // generate unique code (try up to N times)
-  let tries = 0;
-  do {
-    code = generateRandomCode(6);
-    const r = await db.query("SELECT 1 FROM links WHERE code = $1", [code]);
-    if (r.rowCount === 0) break;
-    tries++;
-  } while (tries < 10);
+    let code = requestedCode ? String(requestedCode).trim() : null;
 
-  if (!code) {
-    return res.status(500).json({ error: "Failed to generate unique code" });
+    if (code) {
+      if (!CODE_REGEX.test(code)) {
+        return res.status(400).json({ error: "Custom code must match [A-Za-z0-9]{6,8}" });
+      }
+
+      const { rowCount } = await db.query("SELECT 1 FROM links WHERE code = $1", [code]);
+      if (rowCount > 0) {
+        return res.status(409).json({ error: "Code already exists" });
+      }
+    } else {
+      // generate unique code (try up to N times)
+      let tries = 0;
+      do {
+        code = generateRandomCode(6);
+        const r = await db.query("SELECT 1 FROM links WHERE code = $1", [code]);
+        if (r.rowCount === 0) break;
+        tries++;
+      } while (tries < 10);
+
+      if (!code) {
+        return res.status(500).json({ error: "Failed to generate unique code" });
+      }
+    }
+
+    const insertText = `INSERT INTO links (code, url) VALUES ($1, $2) RETURNING *`;
+    const result = await db.query(insertText, [code, url]);
+
+    const created = mapRow(result.rows[0]);
+    return res.status(201).json({
+      success: false,
+      data: created,
+      error: null,
+      message: "url created successfully"
+    });
+
+
+  } catch (error) {
+    console.error("Error creating short URL:", error);
+    res.status(500).json({
+      success: false,
+      data: {},
+      error: "Internal server error",
+      message: error.message,
+    });
   }
 }
-
 
 const getAllLinks = async (req, res) => {
   try {
