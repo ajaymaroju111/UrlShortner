@@ -40,7 +40,7 @@ export default function LinkTable({ refresh }) {
   }, [refresh]);
 
   async function deleteLink(code) {
-    await fetch(`https://urlshortner-1-4jlb.onrender.com/api/links${code}`, {
+    await fetch(`https://urlshortner-1-4jlb.onrender.com/api/links/${code}`, {
       method: "DELETE",
     });
     loadLinks();
